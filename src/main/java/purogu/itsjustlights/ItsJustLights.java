@@ -1,8 +1,12 @@
 package purogu.itsjustlights;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -20,5 +24,15 @@ public class ItsJustLights
         LampColor lampColor = new LampColor();
         event.getBlockColors().register(lampColor, Registry.collectColoredBlocks());
         event.getItemColors().register(lampColor, Registry.collectColoredItems());
+    }
+
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event)
+    {
+        for(Block block : Registry.collectColoredBlocks()) {
+            RenderTypeLookup.setRenderLayer(block, (layer) -> {
+                return layer == RenderType.getSolid() || layer == RenderType.getTranslucent();
+            });
+        }
     }
 }
