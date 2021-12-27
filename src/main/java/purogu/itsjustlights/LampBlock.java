@@ -40,11 +40,10 @@ public class LampBlock extends RedstoneLampBlock implements IColoredBlock {
     }
 
     public static Properties generateProperties(DyeColor color) {
-        return Properties.create(Material.REDSTONE_LIGHT, color)
+        return Properties.create(Material.GLASS, color)
                 .hardnessAndResistance(2)
                 .harvestTool(ToolType.PICKAXE)
                 .setRequiresTool()
-                .harvestLevel(1)
                 .notSolid();
     }
 }

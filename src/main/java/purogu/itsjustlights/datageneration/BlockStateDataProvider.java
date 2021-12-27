@@ -1,13 +1,8 @@
 package purogu.itsjustlights.datageneration;
 
-import com.google.common.base.Preconditions;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.model.Model;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.MultiLayerModel;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.client.model.generators.loaders.MultiLayerModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -23,48 +18,49 @@ public class BlockStateDataProvider extends BlockStateProvider {
         super(gen, ItsJustLights.ID, exFileHelper);
     }
 
-    @Override
-    protected void registerStatesAndModels() {
-        ResourceLocation onTexture = modLoc("block/lamp_on");
-        ResourceLocation offTexture = modLoc("block/lamp_off");
-        ResourceLocation highlightTexture = modLoc("block/lamp_highlight");
-
-        BlockModelBuilder onBlockSolidModel = models()
+    private BlockModelBuilder nestedWithParent(String parent) {
+        return models()
                 .nested()
+                .parent(new ModelFile.UncheckedModelFile(parent));
+    }
+
+    private ModelFile buildMultiLayerLamp(String modelName, BlockModelBuilder solidModel, BlockModelBuilder translucentModel, ResourceLocation particleTexture) {
+        return models()
+            .withExistingParent(modLoc(modelName).toString(), "block/block")
+            .texture("particle", particleTexture)
+            .customLoader(MultiLayerModelBuilder::begin)
+                .submodel(RenderType.getSolid(), solidModel)
+                .submodel(RenderType.getTranslucent(), translucentModel)
+            .end();
+    }
+
+    private ModelFile buildLampOnModel(ResourceLocation onTexture, ResourceLocation highlightTexture) {
+        BlockModelBuilder onBlockSolidModel = nestedWithParent("block/block")
                 .texture("all", onTexture)
-                .parent(new ModelFile.UncheckedModelFile("block/block"))
                 .element()
                     .from(0.5f, 0.5f, 0.5f)
                     .to(15.5f, 15.5f, 15.5f)
                     .allFaces((direction, faceBuilder) -> faceBuilder
                             .tintindex(0)
-                            .texture("#all")
-                            .cullface(direction))
+                            .texture("#all"))
+    //                      .cullface(direction))
                 .end();
 
-        BlockModelBuilder onBlockTranslucentModel = models()
-                .nested()
-                .parent(new ModelFile.UncheckedModelFile("block/block"))
+        BlockModelBuilder onBlockTranslucentModel = nestedWithParent("block/block")
                 .texture("all", highlightTexture)
                 .element()
                     .allFaces((direction, faceBuilder) -> faceBuilder
                             .tintindex(0)
-                            .texture("#all")
-                            .cullface(direction))
+                            .texture("#all"))
+//                          .cullface(direction))
                 .end();
 
-        ModelFile onBlockModel = models()
-                .withExistingParent(modLoc("lamp_on").toString(), "block/block")
-                .texture("particle", onTexture)
-                .customLoader(MultiLayerModelBuilder::begin)
-                    .submodel(RenderType.getSolid(), onBlockSolidModel)
-                    .submodel(RenderType.getTranslucent(), onBlockTranslucentModel)
-                .end();
+        return buildMultiLayerLamp("lamp_on", onBlockSolidModel, onBlockTranslucentModel, onTexture);
+    }
 
-        ModelFile offBlockModel = models()
-                .withExistingParent(modLoc("lamp_off").toString(), "block/block")
+    private ModelFile buildLampOffModel(ResourceLocation offTexture, ResourceLocation emptyTexture) {
+        BlockModelBuilder offBlockSolidModel = nestedWithParent("block/block")
                 .texture("all", offTexture)
-                .texture("particle", offTexture)
                 .element()
                     .shade(true)
                     .allFaces((direction, faceBuilder) -> faceBuilder
@@ -72,16 +68,33 @@ public class BlockStateDataProvider extends BlockStateProvider {
                             .texture("#all")
                             .cullface(direction))
                 .end();
+
+        BlockModelBuilder offBlockTranslucentModel = nestedWithParent("block/cube_all")
+                .texture("all", emptyTexture);
+
+        return buildMultiLayerLamp("lamp_off", offBlockSolidModel, offBlockTranslucentModel, offTexture);
+    }
+
+    @Override
+    protected void registerStatesAndModels() {
+        ResourceLocation onTexture = modLoc("block/lamp_on");
+        ResourceLocation offTexture = modLoc("block/lamp_off");
+        ResourceLocation highlightTexture = modLoc("block/lamp_highlight");
+        ResourceLocation emptyTexture = modLoc("block/empty");
+
+        ModelFile onBlockModel = buildLampOnModel(onTexture, highlightTexture);
+        ModelFile offBlockModel = buildLampOffModel(offTexture, emptyTexture);
+
         for(RegistryObject<LampBlock> lamp : Registry.LAMP_BLOCKS) {
             getVariantBuilder(lamp.get())
-                    .forAllStates(state -> {
-                        if(state.get(LampBlock.LIT)) {
-                            return new ConfiguredModel[] {new ConfiguredModel(onBlockModel)};
-                        }
-                        else {
-                            return new ConfiguredModel[] {new ConfiguredModel(offBlockModel)};
-                        }
-                    });
+                .forAllStates(state -> {
+                    if(state.get(LampBlock.LIT)) {
+                        return new ConfiguredModel[] {new ConfiguredModel(onBlockModel)};
+                    }
+                    else {
+                        return new ConfiguredModel[] {new ConfiguredModel(offBlockModel)};
+                    }
+                });
             simpleBlockItem(lamp.get(), offBlockModel);
         }
 

@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 
 def modid ="itsjustlights"
 def creator="purogu"
-def version = "beta-1.1"
+def version = "beta-1.2"
 
 setGroup("${creator}.${modid}")
 setArchivesBaseName("${modid}-${version}")
