@@ -13,6 +13,7 @@ public class DataGeneration {
         if(event.includeServer()) {
             generator.addProvider(new LootTableDataProvider(generator));
             generator.addProvider(new RecipeDataProvider(generator));
+            generator.addProvider(new AdvancementDataProvider(generator, event.getExistingFileHelper()));
         }
         if(event.includeClient()) {
             generator.addProvider(new BlockStateDataProvider(generator, event.getExistingFileHelper()));

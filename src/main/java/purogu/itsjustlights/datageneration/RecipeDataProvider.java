@@ -25,7 +25,7 @@ public class RecipeDataProvider extends RecipeProvider {
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        for(int i = 0; i < Registry.NUM_LAMPS; i++) {
+        for (int i = 0; i < Registry.NUM_LAMPS; i++) {
             LampItem lampItem = Registry.LAMP_ITEMS.get(i).get();
             LampBlock lampBlock = Registry.LAMP_BLOCKS.get(i).get();
             LampItem litLampItem = Registry.LIT_LAMP_ITEMS.get(i).get();
@@ -33,27 +33,26 @@ public class RecipeDataProvider extends RecipeProvider {
             String colorKey = lampBlock.getColor().getTranslationKey();
             Tags.IOptionalNamedTag<Item> coloredGlassTag
                     = ItemTags.createOptional(new ResourceLocation("forge", "glass_panes/" + colorKey));
-            ShapedRecipeBuilder.shapedRecipe(lampItem)
+            PlainShapedRecipeBuilder.shapedRecipe(lampItem)
                     .patternLine("gcg")
                     .patternLine("crc")
                     .patternLine("gcg")
                     .key('g', Tags.Items.DUSTS_GLOWSTONE)
                     .key('c', coloredGlassTag)
                     .key('r', Tags.Items.DUSTS_REDSTONE)
-                    .setGroup(ItsJustLights.ID)
-                    .addCriterion("glowstone", InventoryChangeTrigger.Instance.forItems(Items.GLOWSTONE))
+                    .setGroup(new ResourceLocation(ItsJustLights.ID, "lamps").toString())
                     .build(consumer);
 
-            ShapedRecipeBuilder.shapedRecipe(litLampItem)
+            PlainShapedRecipeBuilder.shapedRecipe(litLampItem)
                     .patternLine("gcg")
                     .patternLine("crc")
                     .patternLine("gcg")
                     .key('g', Tags.Items.DUSTS_GLOWSTONE)
                     .key('c', coloredGlassTag)
                     .key('r', Items.REDSTONE_TORCH)
-                    .setGroup(ItsJustLights.ID)
-                    .addCriterion("glowstone", InventoryChangeTrigger.Instance.forItems(Items.GLOWSTONE))
+                    .setGroup(new ResourceLocation(ItsJustLights.ID, "lit_lamps").toString())
                     .build(consumer);
+
         }
     }
 }
