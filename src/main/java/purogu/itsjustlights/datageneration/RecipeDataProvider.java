@@ -1,10 +1,12 @@
 package purogu.itsjustlights.datageneration;
 
 import net.minecraft.data.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import purogu.itsjustlights.ItsJustLights;
 import purogu.itsjustlights.LampBlock;
@@ -19,7 +21,7 @@ public class RecipeDataProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
         for (int i = 0; i < Registry.NUM_LAMPS; i++) {
             LampItem lampItem = Registry.LAMP_ITEMS.get(i).get();
             LampBlock lampBlock = Registry.LAMP_BLOCKS.get(i).get();

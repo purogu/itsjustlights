@@ -3,7 +3,7 @@ package purogu.itsjustlights.datageneration;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGeneration {
@@ -14,6 +14,7 @@ public class DataGeneration {
             generator.addProvider(new LootTableDataProvider(generator));
             generator.addProvider(new RecipeDataProvider(generator));
             generator.addProvider(new AdvancementDataProvider(generator, event.getExistingFileHelper()));
+            generator.addProvider(new BlockTagDataProvider(generator, event.getExistingFileHelper()));
         }
         if(event.includeClient()) {
             generator.addProvider(new BlockStateDataProvider(generator, event.getExistingFileHelper()));

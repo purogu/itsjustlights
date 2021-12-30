@@ -5,13 +5,13 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -26,7 +26,7 @@ public class PlainShapedRecipeBuilder {
     private final Map<Character, Ingredient> key = Maps.newLinkedHashMap();
     private String group;
 
-    protected PlainShapedRecipeBuilder(IItemProvider resultIn, int countIn) {
+    protected PlainShapedRecipeBuilder(ItemLike resultIn, int countIn) {
         this.result = resultIn.asItem();
         this.count = countIn;
     }
@@ -34,28 +34,28 @@ public class PlainShapedRecipeBuilder {
     /**
      * Creates a new builder for a shaped recipe.
      */
-    public static PlainShapedRecipeBuilder shapedRecipe(IItemProvider resultIn) {
+    public static PlainShapedRecipeBuilder shapedRecipe(ItemLike resultIn) {
         return shapedRecipe(resultIn, 1);
     }
 
     /**
      * Creates a new builder for a shaped recipe.
      */
-    public static PlainShapedRecipeBuilder shapedRecipe(IItemProvider resultIn, int countIn) {
+    public static PlainShapedRecipeBuilder shapedRecipe(ItemLike resultIn, int countIn) {
         return new PlainShapedRecipeBuilder(resultIn, countIn);
     }
 
     /**
      * Adds a key to the recipe pattern.
      */
-    public PlainShapedRecipeBuilder key(Character symbol, ITag<Item> tagIn) {
+    public PlainShapedRecipeBuilder key(Character symbol, Tag<Item> tagIn) {
         return this.key(symbol, Ingredient.of(tagIn));
     }
 
     /**
      * Adds a key to the recipe pattern.
      */
-    public PlainShapedRecipeBuilder key(Character symbol, IItemProvider itemIn) {
+    public PlainShapedRecipeBuilder key(Character symbol, ItemLike itemIn) {
         return this.key(symbol, Ingredient.of(itemIn));
     }
 
@@ -91,16 +91,16 @@ public class PlainShapedRecipeBuilder {
     }
 
     /**
-     * Builds this recipe into an {@link IFinishedRecipe}.
+     * Builds this recipe into an {@link FinishedRecipe}.
      */
-    public void build(Consumer<IFinishedRecipe> consumerIn) {
+    public void build(Consumer<FinishedRecipe> consumerIn) {
         this.build(consumerIn, this.result.getRegistryName());
     }
 
     /**
-     * Builds this recipe into an {@link IFinishedRecipe}.
+     * Builds this recipe into an {@link FinishedRecipe}.
      */
-    public void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
+    public void build(Consumer<FinishedRecipe> consumerIn, ResourceLocation id) {
         this.validate(id);
         consumerIn.accept(new Result(id, this.result, this.count,
                 this.group == null ? "" : this.group, this.pattern, this.key));
@@ -135,7 +135,7 @@ public class PlainShapedRecipeBuilder {
         }
     }
 
-    public static class Result implements IFinishedRecipe {
+    public static class Result implements FinishedRecipe {
         private final ResourceLocation id;
         private final Item result;
         private final int count;
@@ -180,8 +180,8 @@ public class PlainShapedRecipeBuilder {
             json.add("result", jsonobject1);
         }
 
-        public IRecipeSerializer<?> getType() {
-            return IRecipeSerializer.SHAPED_RECIPE;
+        public RecipeSerializer<?> getType() {
+            return RecipeSerializer.SHAPED_RECIPE;
         }
 
         public ResourceLocation getId() {

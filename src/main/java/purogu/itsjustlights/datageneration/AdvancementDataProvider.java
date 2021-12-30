@@ -2,13 +2,13 @@ package purogu.itsjustlights.datageneration;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.data.AdvancementProvider;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.advancements.AdvancementProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import purogu.itsjustlights.ItsJustLights;
 import purogu.itsjustlights.LampItem;
 import purogu.itsjustlights.Registry;
@@ -32,7 +32,7 @@ public class AdvancementDataProvider extends AdvancementProvider {
 
         Advancement.Builder.advancement()
                 .parent(new ResourceLocation("recipes/root"))
-                .addCriterion("has_item", InventoryChangeTrigger.Instance.hasItems(Items.GLOWSTONE_DUST))
+                .addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(Items.GLOWSTONE_DUST))
                 .rewards(rewardsBuilder)
                 .save(consumer, new ResourceLocation(ItsJustLights.ID, "lamp_recipes"), fileHelper);
     }

@@ -2,31 +2,35 @@ package purogu.itsjustlights.datageneration;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.BlockItem;
-import net.minecraft.loot.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.data.ForgeLootTableProvider;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.*;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import purogu.itsjustlights.LampItem;
 import purogu.itsjustlights.Registry;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class LootTableDataProvider extends ForgeLootTableProvider {
+public class LootTableDataProvider extends LootTableProvider {
     public LootTableDataProvider(DataGenerator dataGeneratorIn) {
         super(dataGeneratorIn);
     }
 
     private LootTable.Builder createSimpleTable(BlockItem block) {
         LootPool.Builder lootPool = LootPool.lootPool();
-        lootPool
-                .setRolls(ConstantRange.exactly(1))
-                .add(ItemLootEntry.lootTableItem(block));
+        lootPool.setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(block.asItem()));
         return LootTable.lootTable().withPool(lootPool);
     }
 
@@ -45,7 +49,14 @@ public class LootTableDataProvider extends ForgeLootTableProvider {
     }
 
     @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables() {
-        return ImmutableList.of(Pair.of(() -> this::addTables, LootParameterSets.BLOCK));
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
+        map.forEach((p_218436_2_, p_218436_3_) -> {
+            LootTables.validate(validationtracker, p_218436_2_, p_218436_3_);
+        });
+    }
+
+    @Override
+    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
+        return ImmutableList.of(Pair.of(() -> this::addTables, LootContextParamSets.BLOCK));
     }
 }

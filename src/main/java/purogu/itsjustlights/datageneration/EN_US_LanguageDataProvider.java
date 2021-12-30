@@ -2,7 +2,7 @@ package purogu.itsjustlights.datageneration;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import purogu.itsjustlights.*;
 
 public class EN_US_LanguageDataProvider extends LanguageProvider {

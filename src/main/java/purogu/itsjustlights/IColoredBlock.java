@@ -1,6 +1,6 @@
 package purogu.itsjustlights;
 
-import net.minecraft.item.DyeColor;
+import net.minecraft.world.item.DyeColor;
 
 public interface IColoredBlock {
     DyeColor getColor();

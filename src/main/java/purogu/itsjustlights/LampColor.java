@@ -1,19 +1,19 @@
 package purogu.itsjustlights;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.color.IBlockColor;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public class LampColor implements IBlockColor, IItemColor {
+public class LampColor implements BlockColor, ItemColor {
 
     @Override
-    public int getColor(BlockState state, @Nullable IBlockDisplayReader reader, @Nullable BlockPos pos, int tint) {
+    public int getColor(BlockState state, @Nullable BlockAndTintGetter getter, @Nullable BlockPos pos, int tint) {
         return getLampColor(state.getBlock());
     }
 
@@ -24,6 +24,7 @@ public class LampColor implements IBlockColor, IItemColor {
     }
 
     private int getLampColor(Block block) {
-        return ((IColoredBlock)block).getColor().getColorValue();
+        return ((IColoredBlock)block).getColor().getFireworkColor();
     }
+
 }

@@ -1,14 +1,14 @@
 package purogu.itsjustlights;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.RedstoneLampBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.DyeColor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RedstoneLampBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 
 public class LampBlock extends RedstoneLampBlock implements IColoredBlock {
 
@@ -24,12 +24,12 @@ public class LampBlock extends RedstoneLampBlock implements IColoredBlock {
     }
 
     @Override
-    public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
         return state.getValue(LIT) ? 15 : 0;
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
         if (!worldIn.isClientSide) {
             boolean flag = state.getValue(LIT);
             if (flag != worldIn.hasNeighborSignal(pos)) {
@@ -41,9 +41,8 @@ public class LampBlock extends RedstoneLampBlock implements IColoredBlock {
 
     public static Properties generateProperties(DyeColor color) {
         return Properties.of(Material.GLASS, color)
-                .strength(2)
-                .harvestTool(ToolType.PICKAXE)
                 .requiresCorrectToolForDrops()
+                .strength(2)
                 .noOcclusion();
     }
 }

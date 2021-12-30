@@ -1,8 +1,5 @@
 package purogu.itsjustlights;
 
-import java.util.Arrays;
-import java.util.Locale;
-
 public class Utils {
     public static String toTitleCase(String s) {
         String[] split = s.split(" ");

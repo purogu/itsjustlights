@@ -2,11 +2,11 @@ package purogu.itsjustlights.datageneration;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.client.model.generators.loaders.MultiLayerModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import purogu.itsjustlights.ItsJustLights;
 import purogu.itsjustlights.LampBlock;
 import purogu.itsjustlights.LitLampBlock;
