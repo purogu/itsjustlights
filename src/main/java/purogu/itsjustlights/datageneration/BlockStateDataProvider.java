@@ -29,8 +29,8 @@ public class BlockStateDataProvider extends BlockStateProvider {
             .withExistingParent(modLoc(modelName).toString(), "block/block")
             .texture("particle", particleTexture)
             .customLoader(MultiLayerModelBuilder::begin)
-                .submodel(RenderType.getSolid(), solidModel)
-                .submodel(RenderType.getTranslucent(), translucentModel)
+                .submodel(RenderType.solid(), solidModel)
+                .submodel(RenderType.translucent(), translucentModel)
             .end();
     }
 
@@ -88,7 +88,7 @@ public class BlockStateDataProvider extends BlockStateProvider {
         for(RegistryObject<LampBlock> lamp : Registry.LAMP_BLOCKS) {
             getVariantBuilder(lamp.get())
                 .forAllStates(state -> {
-                    if(state.get(LampBlock.LIT)) {
+                    if(state.getValue(LampBlock.LIT)) {
                         return new ConfiguredModel[] {new ConfiguredModel(onBlockModel)};
                     }
                     else {

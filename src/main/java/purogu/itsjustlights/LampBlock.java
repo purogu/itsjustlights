@@ -25,25 +25,25 @@ public class LampBlock extends RedstoneLampBlock implements IColoredBlock {
 
     @Override
     public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-        return state.get(LIT) ? 15 : 0;
+        return state.getValue(LIT) ? 15 : 0;
     }
 
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-        if (!worldIn.isRemote) {
-            boolean flag = state.get(LIT);
-            if (flag != worldIn.isBlockPowered(pos)) {
-                worldIn.setBlockState(pos, state.cycleValue(LIT), 2);
+        if (!worldIn.isClientSide) {
+            boolean flag = state.getValue(LIT);
+            if (flag != worldIn.hasNeighborSignal(pos)) {
+                worldIn.setBlock(pos, state.cycle(LIT), 2);
             }
 
         }
     }
 
     public static Properties generateProperties(DyeColor color) {
-        return Properties.create(Material.GLASS, color)
-                .hardnessAndResistance(2)
+        return Properties.of(Material.GLASS, color)
+                .strength(2)
                 .harvestTool(ToolType.PICKAXE)
-                .setRequiresTool()
-                .notSolid();
+                .requiresCorrectToolForDrops()
+                .noOcclusion();
     }
 }

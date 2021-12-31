@@ -49,14 +49,14 @@ public class PlainShapedRecipeBuilder {
      * Adds a key to the recipe pattern.
      */
     public PlainShapedRecipeBuilder key(Character symbol, ITag<Item> tagIn) {
-        return this.key(symbol, Ingredient.fromTag(tagIn));
+        return this.key(symbol, Ingredient.of(tagIn));
     }
 
     /**
      * Adds a key to the recipe pattern.
      */
     public PlainShapedRecipeBuilder key(Character symbol, IItemProvider itemIn) {
-        return this.key(symbol, Ingredient.fromItems(itemIn));
+        return this.key(symbol, Ingredient.of(itemIn));
     }
 
     /**
@@ -152,7 +152,7 @@ public class PlainShapedRecipeBuilder {
             this.key = keyIn;
         }
 
-        public void serialize(JsonObject json) {
+        public void serializeRecipeData(JsonObject json) {
             if (!this.group.isEmpty()) {
                 json.addProperty("group", this.group);
             }
@@ -167,7 +167,7 @@ public class PlainShapedRecipeBuilder {
             JsonObject jsonobject = new JsonObject();
 
             for(Map.Entry<Character, Ingredient> entry : this.key.entrySet()) {
-                jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().serialize());
+                jsonobject.add(String.valueOf(entry.getKey()), entry.getValue().toJson());
             }
 
             json.add("key", jsonobject);
@@ -180,21 +180,21 @@ public class PlainShapedRecipeBuilder {
             json.add("result", jsonobject1);
         }
 
-        public IRecipeSerializer<?> getSerializer() {
-            return IRecipeSerializer.CRAFTING_SHAPED;
+        public IRecipeSerializer<?> getType() {
+            return IRecipeSerializer.SHAPED_RECIPE;
         }
 
-        public ResourceLocation getID() {
+        public ResourceLocation getId() {
             return this.id;
         }
 
         @Nullable
-        public JsonObject getAdvancementJson() {
+        public JsonObject serializeAdvancement() {
             return null;
         }
 
         @Nullable
-        public ResourceLocation getAdvancementID() {
+        public ResourceLocation getAdvancementId() {
             return null;
         }
     }

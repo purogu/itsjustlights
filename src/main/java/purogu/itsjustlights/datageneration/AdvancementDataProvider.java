@@ -3,7 +3,6 @@ package purogu.itsjustlights.datageneration;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.AdvancementProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.Items;
@@ -31,10 +30,10 @@ public class AdvancementDataProvider extends AdvancementProvider {
             rewardsBuilder.addRecipe(lamp.getId());
         }
 
-        Advancement.Builder.builder()
-                .withParentId(new ResourceLocation("recipes/root"))
-                .withCriterion("has_item", InventoryChangeTrigger.Instance.forItems(Items.GLOWSTONE_DUST))
-                .withRewards(rewardsBuilder)
+        Advancement.Builder.advancement()
+                .parent(new ResourceLocation("recipes/root"))
+                .addCriterion("has_item", InventoryChangeTrigger.Instance.hasItems(Items.GLOWSTONE_DUST))
+                .rewards(rewardsBuilder)
                 .save(consumer, new ResourceLocation(ItsJustLights.ID, "lamp_recipes"), fileHelper);
     }
 }

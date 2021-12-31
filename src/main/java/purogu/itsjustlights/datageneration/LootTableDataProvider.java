@@ -6,11 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.loot.*;
-import net.minecraft.loot.functions.CopyName;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.data.ForgeLootTableProvider;
 import net.minecraftforge.fml.RegistryObject;
-import purogu.itsjustlights.LampBlock;
 import purogu.itsjustlights.LampItem;
 import purogu.itsjustlights.Registry;
 
@@ -25,11 +23,11 @@ public class LootTableDataProvider extends ForgeLootTableProvider {
     }
 
     private LootTable.Builder createSimpleTable(BlockItem block) {
-        LootPool.Builder lootPool = new LootPool.Builder();
+        LootPool.Builder lootPool = LootPool.lootPool();
         lootPool
-                .rolls(ConstantRange.of(1))
-                .addEntry(ItemLootEntry.builder(block));
-        return new LootTable.Builder().addLootPool(lootPool);
+                .setRolls(ConstantRange.exactly(1))
+                .add(ItemLootEntry.lootTableItem(block));
+        return LootTable.lootTable().withPool(lootPool);
     }
 
     private ResourceLocation lootTableLocation(Block block) {

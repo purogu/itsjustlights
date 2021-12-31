@@ -31,7 +31,7 @@ public class ItsJustLights
     {
         for(Block block : Registry.collectColoredBlocks()) {
             RenderTypeLookup.setRenderLayer(block, (layer) -> {
-                return layer == RenderType.getSolid() || layer == RenderType.getTranslucent();
+                return layer == RenderType.solid() || layer == RenderType.translucent();
             });
         }
     }
