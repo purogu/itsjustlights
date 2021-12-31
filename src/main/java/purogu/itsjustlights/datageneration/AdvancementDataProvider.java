@@ -8,7 +8,7 @@ import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import purogu.itsjustlights.ItsJustLights;
 import purogu.itsjustlights.LampItem;
 import purogu.itsjustlights.Registry;
