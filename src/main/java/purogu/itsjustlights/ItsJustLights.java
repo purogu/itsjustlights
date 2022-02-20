@@ -3,6 +3,8 @@ package purogu.itsjustlights;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,6 +21,7 @@ public class ItsJustLights
         Registry.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public static void registerItemColor(ColorHandlerEvent.Item event) {
         LampColor lampColor = new LampColor();
