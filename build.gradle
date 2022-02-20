@@ -13,7 +13,7 @@ apply plugin: 'net.minecraftforge.gradle'
 def minecraftVersion = "1.17"
 def modid ="itsjustlights"
 def creator="purogu"
-def version = "1.0.0"
+def version = "1.0.1"
 
 setGroup("${creator}.${modid}")
 setArchivesBaseName("${modid}[${minecraftVersion}]-v${version}")
@@ -41,6 +41,10 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
+
+            if(project.hasProperty('username') && project.hasProperty('password')) {
+                args '--username', project.username, '--password', project.password
+            }
 
             // Recommended logging data for a userdev environment
             // The markers can be changed as needed.
