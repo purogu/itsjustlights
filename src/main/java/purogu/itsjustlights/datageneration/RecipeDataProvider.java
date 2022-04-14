@@ -5,6 +5,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
@@ -28,8 +29,8 @@ public class RecipeDataProvider extends RecipeProvider {
             LampItem litLampItem = Registry.LIT_LAMP_ITEMS.get(i).get();
 
             String colorKey = lampBlock.getColor().getName();
-            Tags.IOptionalNamedTag<Item> coloredGlassTag
-                    = ItemTags.createOptional(new ResourceLocation("forge", "glass_panes/" + colorKey));
+            TagKey<Item> coloredGlassTag
+                    = ItemTags.create(new ResourceLocation("forge", "glass_panes/" + colorKey));
             PlainShapedRecipeBuilder.shapedRecipe(lampItem)
                     .patternLine("gcg")
                     .patternLine("crc")

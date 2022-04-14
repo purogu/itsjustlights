@@ -7,7 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -48,7 +48,7 @@ public class PlainShapedRecipeBuilder {
     /**
      * Adds a key to the recipe pattern.
      */
-    public PlainShapedRecipeBuilder key(Character symbol, Tag<Item> tagIn) {
+    public PlainShapedRecipeBuilder key(Character symbol, TagKey<Item> tagIn) {
         return this.key(symbol, Ingredient.of(tagIn));
     }
 
